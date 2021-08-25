@@ -191,6 +191,9 @@ app.post("/api/postuserdata", (req, res)  =>
 })
 
 
+
+
+
 app.post("/api/updateuserdata", (req, res)  =>
 {
   var a = req.body.a;
@@ -227,11 +230,119 @@ app.post("/api/updateuserdata", (req, res)  =>
     }
     else
     {
-      console.log(result[0]);
-      res.send("SUCESSO");
+      var stm2 = "SELECT * FROM dadosUsuario WHERE idUsuario=?";
+      db.query(stm2, [ a ], (err, result) =>
+      {
+        res.send(result[0]);
+      })
     }
   })
 })
+
+
+
+
+
+
+app.post("/api/getuserdata", (req, res)  =>
+{
+  var a = req.body.a;
+
+  var stm2 = "SELECT * FROM dadosUsuario WHERE idUsuario=?";
+  db.query(stm2, [ a ], (err, result) =>
+  {
+    if (err)
+    {
+      console.log(err);
+      res.send('0');
+    } 
+    else if (result.length == 0)
+    {
+      res.send('0'); //this is what you are missing
+    }
+    else
+    {
+      res.send(result[0]);
+    }
+  })
+})
+
+
+app.post("/api/postvalues", (req, res)  =>
+{
+  var a = req.body.a;
+  var b = req.body.b;
+  var c = req.body.c;
+
+  var stm = "INSERT INTO dados (idUsuario, imc, data) VALUES (?, ?, ?)";
+  db.query(stm, [ a, b, c], (err, result) =>
+  {
+    if (err)
+    {
+      console.log(err);
+      res.send('0');
+    } 
+    else if (result.length == 0)
+    {
+      res.send('1'); //this is what you are missing
+    }
+    else
+    {
+      res.send(result[0]);
+    }
+  })
+})
+
+
+
+
+app.post("/api/getvalues", (req, res)  =>
+{
+  var a = req.body.a;
+
+  var stm2 = "SELECT * FROM dados WHERE idUsuario=?";
+  db.query(stm2, [ a ], (err, result) =>
+  {
+    if (err)
+    {
+      console.log(err);
+      res.send('0');
+    } 
+    else if (result.length == 0)
+    {
+      res.send('1'); //this is what you are missing
+    }
+    else
+    {/*
+      var label = new Array();
+      var data = new Array();
+
+      for(var i = 0; i<result.length; i++)
+      {
+        label.push(result[i].data);
+        data.push(result[i].imc);
+      }
+
+      var resultado = 
+      
+        [
+          {
+          a:label,
+          b:data
+        }
+        ]
+      */
+      res.send(result);
+    }
+  })
+})
+
+
+
+
+
+
+
 
 app.listen(process.env.PORT || port, () =>
 {
