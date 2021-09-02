@@ -273,9 +273,10 @@ app.post("/api/postvalues", (req, res)  =>
   var a = req.body.a;
   var b = req.body.b;
   var c = req.body.c;
+  var d = req.body.d;
 
-  var stm = "INSERT INTO dados (idUsuario, imc, data) VALUES (?, ?, ?)";
-  db.query(stm, [ a, b, c], (err, result) =>
+  var stm = "INSERT INTO dados (idUsuario, data, imc, gc ) VALUES (?, ?, ?, ?)";
+  db.query(stm, [ a, b, c, d], (err, result) =>
   {
     if (err)
     {
